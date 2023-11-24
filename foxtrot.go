@@ -1,6 +1,8 @@
 package main
 
 import (
+  "os"
+  "log"
 	"fmt"
 	"net/http"
 	"strings"
@@ -17,10 +19,22 @@ var natoMap = map[string]string{
 }
 
 func main() {
+
+  cwd, err := os.Getwd()
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Println("Current working directory:", cwd)
+
+  port := os.Getenv("PORT")
+  if port == "" {
+    port = "8080"
+  }
+
 	http.HandleFunc("/", fileServerHandler)
 	http.HandleFunc("/nato/", natoHandler)
 
-	fmt.Println("Server is running on http://localhost:8080")
+	fmt.Println("Server is running!")
 	http.ListenAndServe(":8080", nil)
 }
 
