@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/nato/", natoHandler) // Define a variable route
+	http.HandleFunc("/", fileServerHandler) // Serve files
+	http.HandleFunc("/nato/", natoHandler)
 
 	fmt.Println("Server is running on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
@@ -16,6 +16,10 @@ func main() {
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Welcome to the Go Web Server!")
+}
+
+func fileServerHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, r.URL.Path[1:])
 }
 
 var natoMap = map[string]string{
@@ -29,16 +33,15 @@ var natoMap = map[string]string{
 }
 
 func natoHandler(w http.ResponseWriter, r *http.Request) {
-	// Extract the letter from the URL path
-	letterPath := strings.ToLower(r.URL.Path[len("/nato/"):])
-	if len(letterPath) != 1 {
-		http.Error(w, "Not Found", http.StatusNotFound)
+	letter := strings.ToLower(r.URL.Query().Get("letter"))
+	if len(letter) != 1 {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
-	natoWord, exists := natoMap[letterPath]
+	natoWord, exists := natoMap[letter]
 	if !exists {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
-	fmt.Fprint(w, natoWord)
+	fmt.Fprintf(w, "<html><body><p>The NATO word for '%s' is: %s</p></body></html>", strings.ToUpper(letter), natoWord)
 }
