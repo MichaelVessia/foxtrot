@@ -2,10 +2,11 @@
 <html>
   <head>
     <title>NATO Phonetic Alphabet Translator</title>
+    <script src="https://unpkg.com/htmx.org"></script>
   </head>
   <body>
     <h1>NATO Phonetic Alphabet Translator</h1>
-    <form action="/nato/" method="get">
+    <form id="natoForm" hx-get="/nato/" hx-target="#result">
       <label for="letter">Enter a letter:</label>
       <input type="text" id="letter" name="letter" maxlength="1" />
       <input type="submit" value="Translate" />
