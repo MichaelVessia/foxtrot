@@ -7,10 +7,10 @@
   <body>
     <h1>NATO Phonetic Alphabet Translator</h1>
     <form id="natoForm" hx-get="/nato/" hx-target="#result">
-      <label for="letter">Enter a letter:</label>
-      <input type="text" id="letter" name="letter" maxlength="1" />
+      <label for="word">Enter a word:</label>
+      <input type="text" id="word" name="word" maxlength="30" />
       <input type="submit" value="Translate" />
     </form>
-    <p id="result"></p>
+    <p id="result" style="white-space: pre-line"></p>
   </body>
 </html>

@@ -33,16 +33,21 @@ func fileServerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func natoHandler(w http.ResponseWriter, r *http.Request) {
-	letter := strings.ToLower(r.URL.Query().Get("letter"))
-	if len(letter) != 1 || !strings.Contains("abcdefghijklmnopqrstuvwxyz", letter) {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
-		return
+	word := strings.ToLower(r.URL.Query().Get("word"))
+	var natoWords []string
+	for _, char := range word {
+		if char < 'a' || char > 'z' {
+			http.Error(w, "Invalid input", http.StatusBadRequest)
+			return
+		}
+		natoWord, exists := natoMap[string(char)]
+		if !exists {
+			http.Error(w, "Not Found", http.StatusNotFound)
+			return
+		}
+		natoWords = append(natoWords, natoWord)
 	}
-	natoWord, exists := natoMap[letter]
-	if !exists {
-		http.Error(w, "Not Found", http.StatusNotFound)
-		return
-	}
-	fmt.Fprint(w, natoWord)
+	response := strings.Join(natoWords, "\n")
+	fmt.Fprint(w, response)
 }
 
