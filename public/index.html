@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NATO Phonetic Alphabet Translator</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <link rel="stylesheet" href="/static/pico.min.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div>
+        <h1>NATO Phonetic Alphabet Translator</h1>
+        <form
+          id="natoForm"
+          hx-get="/nato/"
+          hx-target="#result"
+          hx-trigger="keyup delay:500ms"
+        >
+          <div>
+            <label for="word">Enter a word:</label>
+            <div>
+              <input type="text" id="word" name="word" maxlength="30" />
+            </div>
+          </div>
+        </form>
+        <div>
+          <p id="result"></p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
